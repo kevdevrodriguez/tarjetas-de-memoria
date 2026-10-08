@@ -13,10 +13,12 @@
 html,body{margin:0}
 body{background:var(--bg);color:var(--ink);font:17px/1.5 "Nunito",system-ui,-apple-system,"Segoe UI",Arial,sans-serif;min-height:100vh;transition:background .3s}
 .app{max-width:980px;margin:0 auto;padding:22px 16px 40px}
-h1{margin:0;font-size:1.6rem;font-weight:800;text-align:center;background:linear-gradient(135deg,var(--qi),var(--ok));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+h1{margin:0;font-size:1.8rem;font-weight:800;text-align:center;background:linear-gradient(135deg,var(--qi),var(--ok));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+@media(max-width:600px){h1{font-size:1.5rem}}
 .sub{text-align:center;color:var(--mute);font-size:.92rem;margin:2px 0 18px}
 .bar{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-bottom:14px}
-.chip{background:var(--card);border:1px solid var(--line);color:var(--ink);border-radius:999px;padding:7px 14px;font:inherit;font-size:.88rem;cursor:pointer;transition:all .2s}
+.chip{background:var(--card);border:1px solid var(--line);color:var(--ink);border-radius:999px;padding:8px 16px;font:inherit;font-size:.88rem;cursor:pointer;transition:all .2s;white-space:nowrap}
+@media(max-width:600px){.chip{font-size:.82rem;padding:7px 12px}}
 .chip:hover{transform:translateY(-2px);box-shadow:0 4px 12px rgba(120,90,60,.2);border-color:var(--qi)}
 .chip.on{background:var(--qi);border-color:var(--qi);color:#fff;transform:scale(1.05)}
 .chip:active{transform:scale(.98)}
@@ -45,8 +47,12 @@ h1{margin:0;font-size:1.6rem;font-weight:800;text-align:center;background:linear
 .ac:nth-child(1){background:var(--a1)}.ac:nth-child(2){background:var(--a2)}.ac:nth-child(3){background:var(--a3)}
 .ac b{display:block;font-size:1.1rem;font-weight:800}
 .ac .tr{margin-top:2px;font-size:.95rem}
-.ctl{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-top:20px}
-.btn{border:0;border-radius:14px;padding:12px 20px;font:inherit;font-weight:700;cursor:pointer;color:#fff;transition:all .2s}
+.ctl{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-top:20px;align-items:center}
+.nav-btns{display:flex;gap:10px;width:100%}
+.nav-btns .btn{flex:1}
+@media(min-width:600px){.nav-btns{width:auto}.nav-btns .btn{flex:initial}}
+.btn{border:0;border-radius:14px;padding:12px 20px;font:inherit;font-weight:700;cursor:pointer;color:#fff;transition:all .2s;min-width:120px}
+@media(max-width:600px){.btn{padding:10px 16px;font-size:.9rem;min-width:100px}}
 .btn:hover{transform:translateY(-2px);box-shadow:0 6px 16px rgba(0,0,0,.2)}
 .btn:active{transform:translateY(0)}
 .b-no{background:var(--no)}.b-ok{background:var(--ok)}
@@ -58,23 +64,25 @@ h1{margin:0;font-size:1.6rem;font-weight:800;text-align:center;background:linear
 </head>
 <body>
 <div class="app">
-<h1>🗂️ Tarjetas · Preguntas y respuestas</h1>
-<div class="sub">Español ↔ Русский · A1 · Вопрос слева — возможные ответы справа</div>
+<h1>📚 Tarjetas A1</h1>
+<div class="sub">Español ↔ Русский</div>
 <div class="bar">
-<button class="chip" id="d0" onclick="setDir(0)">🇪🇸 Español → 🇷🇺 Русский</button>
-<button class="chip" id="d1" onclick="setDir(1)">🇷🇺 Русский → 🇪🇸 Español</button>
-<button class="chip" id="fl" onclick="togOnly()">Только «не помню»</button>
-<button class="chip" onclick="resetAll()">↺ Сбросить</button>
+<button class="chip" id="d0" onclick="setDir(0)">🇪🇸 → 🇷🇺</button>
+<button class="chip" id="d1" onclick="setDir(1)">🇷🇺 → 🇪🇸</button>
+<button class="chip" id="fl" onclick="togOnly()">✗ Не помню</button>
+<button class="chip" onclick="resetAll()">↺ Сброс</button>
 </div>
 <div class="prog"><i id="pg"></i></div>
 <div class="stats"><span id="sk">✓ Помню: 0</span><span id="su">✗ Не помню: 0</span></div>
 <div class="count" id="ct"></div>
 <div id="stage"></div>
 <div class="ctl" id="ctl">
-<button class="btn b-n" onclick="go(-1)">← Назад</button>
 <button class="btn b-no" onclick="mark(0)">✗ Не помню</button>
 <button class="btn b-ok" onclick="mark(1)">✓ Помню</button>
+<div class="nav-btns">
+<button class="btn b-n" onclick="go(-1)">← Назад</button>
 <button class="btn b-n" onclick="go(1)">Дальше →</button>
+</div>
 </div>
 <div class="hint">Нажмите на любую карточку, чтобы показать перевод 👆</div>
 </div>
