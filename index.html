@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Tarjetas · Preguntas y respuestas A1</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;800&display=swap">
+<style>
+:root{--bg:#f6f1ea;--card:#fffdf9;--ink:#3b3631;--mute:#8a8178;--line:#eadfd2;--q:#fbe3d6;--qi:#c9694a;--a1:#dcefe3;--a2:#e4e0f5;--a3:#dbeaf5;--ok:#5b9b73;--no:#d17a6f;--sh:0 8px 24px rgba(120,90,60,.10);box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#1d1a18;--card:#2a2623;--ink:#f1ebe4;--mute:#b0a69b;--line:#3d3732;--q:#4a342b;--qi:#f0a186;--a1:#27382e;--a2:#2f2c45;--a3:#26384a;--ok:#86c79f;--no:#e8a095;--sh:0 8px 24px rgba(0,0,0,.3)}}
+:root[data-theme="dark"]{--bg:#1d1a18;--card:#2a2623;--ink:#f1ebe4;--mute:#b0a69b;--line:#3d3732;--q:#4a342b;--qi:#f0a186;--a1:#27382e;--a2:#2f2c45;--a3:#26384a;--ok:#86c79f;--no:#e8a095;--sh:0 8px 24px rgba(0,0,0,.3)}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--bg);color:var(--ink);font:17px/1.5 "Nunito",system-ui,-apple-system,"Segoe UI",Arial,sans-serif;min-height:100vh}
+.app{max-width:980px;margin:0 auto;padding:22px 16px 40px}
+h1{margin:0;font-size:1.6rem;font-weight:800;text-align:center}
+.sub{text-align:center;color:var(--mute);font-size:.92rem;margin:2px 0 18px}
+.bar{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-bottom:14px}
+.chip{background:var(--card);border:1px solid var(--line);color:var(--ink);border-radius:999px;padding:7px 14px;font:inherit;font-size:.88rem;cursor:pointer}
+.chip.on{background:var(--qi);border-color:var(--qi);color:#fff}
+.prog{height:8px;background:var(--line);border-radius:99px;overflow:hidden}
+.prog i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--ok),var(--qi));transition:width .3s}
+.stats{display:flex;justify-content:space-between;font-size:.85rem;color:var(--mute);margin:6px 2px 16px}
+.count{text-align:center;color:var(--mute);font-size:.9rem;margin-bottom:10px}
+.pair{display:grid;grid-template-columns:1fr 1fr;gap:18px;align-items:stretch}
+@media(max-width:720px){.pair{grid-template-columns:1fr}}
+.card{background:var(--card);border:1px solid var(--line);border-radius:22px;box-shadow:var(--sh);padding:22px;cursor:pointer}
+.qc{background:var(--q);display:flex;flex-direction:column;justify-content:center;text-align:center;min-height:200px}
+.lab{font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:var(--mute);margin-bottom:8px}
+.qc .lab{color:var(--qi)}
+.big{font-size:1.65rem;font-weight:800;line-height:1.25}
+.tr{margin-top:8px;color:var(--mute);transition:filter .25s}
+.tr.hid{filter:blur(7px);user-select:none}
+.ans{display:flex;flex-direction:column;gap:12px}
+.ac{padding:14px 18px;border-radius:18px;border:1px solid var(--line);box-shadow:var(--sh);cursor:pointer}
+.ac:nth-child(1){background:var(--a1)}.ac:nth-child(2){background:var(--a2)}.ac:nth-child(3){background:var(--a3)}
+.ac b{display:block;font-size:1.1rem;font-weight:800}
+.ac .tr{margin-top:2px;font-size:.95rem}
+.ctl{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-top:20px}
+.btn{border:0;border-radius:14px;padding:12px 20px;font:inherit;font-weight:700;cursor:pointer;color:#fff}
+.b-no{background:var(--no)}.b-ok{background:var(--ok)}
+.b-n{background:var(--card);color:var(--ink);border:1px solid var(--line)}
+.hint{text-align:center;color:var(--mute);font-size:.82rem;margin-top:14px}
+.empty{text-align:center;padding:50px 10px;color:var(--mute)}
+</style>
+</head>
+<body>
+<div class="app">
+<h1>🗂️ Tarjetas · Preguntas y respuestas</h1>
+<div class="sub">Español ↔ Русский · A1 · Вопрос слева — возможные ответы справа</div>
+<div class="bar">
+<button class="chip" id="d0" onclick="setDir(0)">🇪🇸 Español → 🇷🇺 Русский</button>
+<button class="chip" id="d1" onclick="setDir(1)">🇷🇺 Русский → 🇪🇸 Español</button>
+<button class="chip" id="fl" onclick="togOnly()">Только «не помню»</button>
+<button class="chip" onclick="resetAll()">↺ Сбросить</button>
+</div>
+<div class="prog"><i id="pg"></i></div>
+<div class="stats"><span id="sk">✓ Помню: 0</span><span id="su">✗ Не помню: 0</span></div>
+<div class="count" id="ct"></div>
+<div id="stage"></div>
+<div class="ctl" id="ctl">
+<button class="btn b-n" onclick="go(-1)">← Назад</button>
+<button class="btn b-no" onclick="mark(0)">✗ Не помню</button>
+<button class="btn b-ok" onclick="mark(1)">✓ Помню</button>
+<button class="btn b-n" onclick="go(1)">Дальше →</button>
+</div>
+<div class="hint">Нажмите на любую карточку, чтобы показать перевод 👆</div>
+</div>
+<script>
+var P=[
+["¿Cómo te llamas?","Как тебя зовут?",[["Me llamo Ana.","Меня зовут Ана."],["Me llamo Pablo.","Меня зовут Пабло."],["Soy Marta.","Я Марта."]]],
+["¿Cómo estás?","Как дела?",[["Muy bien.","Очень хорошо."],["Mal.","Плохо."],["Más o menos.","Так себе."]]],
+["¿De dónde eres?","Ты откуда?",[["Soy de Rusia.","Я из России."],["Soy de Madrid.","Я из Мадрида."],["Soy de Colombia.","Я из Колумбии."]]],
+["¿Dónde vives?","Где ты живёшь?",[["Vivo en San Petersburgo.","Я живу в Санкт-Петербурге."],["Vivo en Moscú.","Я живу в Москве."],["Vivo en Madrid.","Я живу в Мадриде."]]],
+["¿Cuántos años tienes?","Сколько тебе лет?",[["Tengo veinte años.","Мне двадцать лет."],["Tengo treinta años.","Мне тридцать лет."],["Tengo cuarenta años.","Мне сорок лет."]]],
+["¿Hablas español?","Ты говоришь по-испански?",[["Sí, un poco.","Да, немного."],["Sí, hablo español.","Да, я говорю по-испански."],["No, no hablo español.","Нет, я не говорю по-испански."]]],
+["¿Qué haces?","Что ты делаешь?",[["Estudio español.","Я учу испанский."],["Trabajo.","Я работаю."],["Camino por el parque.","Я гуляю по парку."]]],
+["¿Trabajas?","Ты работаешь?",[["Sí, trabajo.","Да, я работаю."],["No, no trabajo.","Нет, я не работаю."],["Sí, en un hospital.","Да, в больнице."]]],
+["¿Dónde trabajas?","Где ты работаешь?",[["Trabajo en un hospital.","Я работаю в больнице."],["Trabajo en una tienda.","Я работаю в магазине."],["Trabajo en la casa.","Я работаю дома."]]],
+["¿Tienes familia?","У тебя есть семья?",[["Sí, tengo una familia pequeña.","Да, у меня маленькая семья."],["Sí, tengo una familia grande.","Да, у меня большая семья."],["Sí, mi familia está en Rusia.","Да, моя семья в России."]]],
+["¿Tienes hermanos?","У тебя есть братья или сёстры?",[["Sí, tengo un hermano.","Да, у меня есть брат."],["Sí, tengo una hermana.","Да, у меня есть сестра."],["No, no tengo hermanos.","Нет, у меня нет братьев и сестёр."]]],
+["¿Tienes un perro o un gato?","У тебя есть собака или кот?",[["Tengo un perro.","У меня есть собака."],["Tengo un gato.","У меня есть кот."],["No tengo animales.","У меня нет животных."]]],
+["¿Qué bebes?","Что ты пьёшь?",[["Bebo café.","Я пью кофе."],["Bebo té sin azúcar.","Я пью чай без сахара."],["Bebo agua.","Я пью воду."]]],
+["¿Bebes café con leche?","Ты пьёшь кофе с молоком?",[["Sí, café con leche.","Да, кофе с молоком."],["No, café sin leche.","Нет, кофе без молока."],["No, bebo té.","Нет, я пью чай."]]],
+["¿Dónde estás?","Где ты?",[["Estoy en la casa.","Я дома."],["Estoy en el parque.","Я в парке."],["Estoy en el trabajo.","Я на работе."]]],
+["¿Con quién vas?","С кем ты идёшь?",[["Voy con mi amigo.","Я иду с другом."],["Voy con mi madre.","Я иду с мамой."],["Voy solo.","Я иду один."]]],
+["¿Qué hora es?","Который час?",[["Son las tres.","Три часа."],["Son las cinco.","Пять часов."],["Es la una.","Час."]]],
+["¿Cómo se dice «стол» en español?","Как сказать «стол» по-испански?",[["Se dice «mesa».","Говорят «mesa»."],["Se dice «casa».","Говорят «casa»."],["Se dice «perro».","Говорят «perro»."]]],
+["¿Puedes repetir, por favor?","Можешь повторить, пожалуйста?",[["Sí, claro.","Да, конечно."],["Sí, otra vez.","Да, ещё раз."],["Perdón, no entiendo.","Извини, я не понимаю."]]],
+["¿Qué significa «mesa»?","Что значит «mesa»?",[["Significa «стол».","Значит «стол»."],["Significa «кот».","Значит «кот»."],["Significa «дом».","Значит «дом»."]]]
+];
+var S={},dir=0,only=false,i=0,rev=false,K="tarjetas_a1";
+try{S=JSON.parse(localStorage.getItem(K)||"{}")}catch(e){S={}}
+function save(){try{localStorage.setItem(K,JSON.stringify(S))}catch(e){}}
+function list(){return P.map(function(_,k){return k}).filter(function(k){return!only||S[k]===0})}
+function esc(t){return t.replace(/&/g,"&amp;").replace(/</g,"&lt;")}
+function render(){var L=list(),st=document.getElementById("stage"),kn=0,un=0;
+P.forEach(function(_,k){if(S[k]===1)kn++;if(S[k]===0)un++});
+document.getElementById("sk").textContent="✓ Помню: "+kn;document.getElementById("su").textContent="✗ Не помню: "+un;
+document.getElementById("pg").style.width=Math.round(100*(kn+un)/P.length)+"%";
+document.getElementById("d0").className="chip"+(dir==0?" on":"");document.getElementById("d1").className="chip"+(dir==1?" on":"");
+document.getElementById("fl").className="chip"+(only?" on":"");
+if(!L.length){st.innerHTML='<div class="empty">🎉 Нет карточек «не помню».<br>Отличная работа!</div>';document.getElementById("ct").textContent="";document.getElementById("ctl").style.display="none";return}
+document.getElementById("ctl").style.display="flex";
+if(i>=L.length)i=0;if(i<0)i=L.length-1;
+var p=P[L[i]],m=dir?1:0,s=dir?0:1,h=rev?"":" hid";
+document.getElementById("ct").textContent="Карточка "+(i+1)+" из "+L.length+(S[L[i]]===1?" · ✓":S[L[i]]===0?" · ✗":"");
+var a=p[2].map(function(x){return'<div class="ac" onclick="flip()"><b>'+esc(x[m])+'</b><div class="tr'+h+'">'+esc(x[s])+"</div></div>"}).join("");
+st.innerHTML='<div class="pair"><div class="card qc" onclick="flip()"><div class="lab">Вопрос · Pregunta</div><div class="big">'+esc(p[m])+'</div><div class="tr'+h+'">'+esc(p[s])+'</div></div><div class="ans">'+a+"</div></div>"}
+function flip(){rev=!rev;render()}
+function go(d){i+=d;rev=false;render()}
+function mark(v){var L=list();S[L[i]]=v;save();rev=false;if(!(only&&v===1))i++;render()}
+function setDir(d){dir=d;rev=false;render()}
+function togOnly(){only=!only;i=0;rev=false;render()}
+function resetAll(){S={};save();only=false;i=0;rev=false;render()}
+render();
+</script>
+</body>
+</html>
