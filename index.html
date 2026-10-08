@@ -11,37 +11,56 @@
 :root[data-theme="dark"]{--bg:#1d1a18;--card:#2a2623;--ink:#f1ebe4;--mute:#b0a69b;--line:#3d3732;--q:#4a342b;--qi:#f0a186;--a1:#27382e;--a2:#2f2c45;--a3:#26384a;--ok:#86c79f;--no:#e8a095;--sh:0 8px 24px rgba(0,0,0,.3)}
 *{box-sizing:border-box}
 html,body{margin:0}
-body{background:var(--bg);color:var(--ink);font:17px/1.5 "Nunito",system-ui,-apple-system,"Segoe UI",Arial,sans-serif;min-height:100vh}
+body{background:var(--bg);color:var(--ink);font:17px/1.5 "Nunito",system-ui,-apple-system,"Segoe UI",Arial,sans-serif;min-height:100vh;transition:background .3s}
 .app{max-width:980px;margin:0 auto;padding:22px 16px 40px}
-h1{margin:0;font-size:1.6rem;font-weight:800;text-align:center}
+h1{margin:0;font-size:1.6rem;font-weight:800;text-align:center;background:linear-gradient(135deg,var(--qi),var(--ok));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
 .sub{text-align:center;color:var(--mute);font-size:.92rem;margin:2px 0 18px}
 .bar{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-bottom:14px}
-.chip{background:var(--card);border:1px solid var(--line);color:var(--ink);border-radius:999px;padding:7px 14px;font:inherit;font-size:.88rem;cursor:pointer}
-.chip.on{background:var(--qi);border-color:var(--qi);color:#fff}
-.prog{height:8px;background:var(--line);border-radius:99px;overflow:hidden}
-.prog i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--ok),var(--qi));transition:width .3s}
-.stats{display:flex;justify-content:space-between;font-size:.85rem;color:var(--mute);margin:6px 2px 16px}
-.count{text-align:center;color:var(--mute);font-size:.9rem;margin-bottom:10px}
-.pair{display:grid;grid-template-columns:1fr 1fr;gap:18px;align-items:stretch}
+.chip{background:var(--card);border:1px solid var(--line);color:var(--ink);border-radius:999px;padding:7px 14px;font:inherit;font-size:.88rem;cursor:pointer;transition:all .2s;position:relative;overflow:hidden}
+.chip::before{content:"";position:absolute;top:50%;left:50%;width:0;height:0;border-radius:50%;background:rgba(201,105,74,.2);transform:translate(-50%,-50%);transition:width .5s,height .5s}
+.chip:hover::before{width:200px;height:200px}
+.chip:hover{transform:translateY(-2px);box-shadow:0 4px 12px rgba(120,90,60,.15)}
+.chip.on{background:var(--qi);border-color:var(--qi);color:#fff;transform:scale(1.05)}
+.chip:active{transform:scale(.98)}
+.prog{height:10px;background:var(--line);border-radius:99px;overflow:hidden;position:relative}
+.prog i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--ok),var(--qi));transition:width .5s ease-out;position:relative;overflow:hidden}
+.prog i::after{content:"";position:absolute;top:0;left:0;right:0;bottom:0;background:linear-gradient(90deg,transparent,rgba(255,255,255,.3),transparent);animation:shimmer 2s infinite}
+@keyframes shimmer{0%{transform:translateX(-100%)}100%{transform:translateX(100%)}}
+.stats{display:flex;justify-content:space-between;font-size:.85rem;color:var(--mute);margin:6px 2px 16px;font-weight:600}
+.count{text-align:center;color:var(--mute);font-size:.9rem;margin-bottom:10px;font-weight:600}
+.pair{display:grid;grid-template-columns:1fr 1fr;gap:18px;align-items:stretch;animation:fadeIn .4s}
+@keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
 @media(max-width:720px){.pair{grid-template-columns:1fr}}
-.card{background:var(--card);border:1px solid var(--line);border-radius:22px;box-shadow:var(--sh);padding:22px;cursor:pointer}
+.card{background:var(--card);border:1px solid var(--line);border-radius:22px;box-shadow:var(--sh);padding:22px;cursor:pointer;transition:all .3s;position:relative}
+.card:hover{transform:translateY(-4px);box-shadow:0 12px 32px rgba(120,90,60,.15)}
+.card:active{transform:translateY(-2px)}
 .qc{background:var(--q);display:flex;flex-direction:column;justify-content:center;text-align:center;min-height:200px}
-.lab{font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:var(--mute);margin-bottom:8px}
+.qc:hover{background:linear-gradient(135deg,var(--q),rgba(251,227,214,.7))}
+.lab{font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:var(--mute);margin-bottom:8px;font-weight:600}
 .qc .lab{color:var(--qi)}
 .big{font-size:1.65rem;font-weight:800;line-height:1.25}
-.tr{margin-top:8px;color:var(--mute);transition:filter .25s}
-.tr.hid{filter:blur(7px);user-select:none}
+.tr{margin-top:8px;color:var(--mute);transition:filter .3s,opacity .3s}
+.tr.hid{filter:blur(7px);user-select:none;opacity:.7}
 .ans{display:flex;flex-direction:column;gap:12px}
-.ac{padding:14px 18px;border-radius:18px;border:1px solid var(--line);box-shadow:var(--sh);cursor:pointer}
+.ac{padding:14px 18px;border-radius:18px;border:1px solid var(--line);box-shadow:var(--sh);cursor:pointer;transition:all .3s;position:relative;overflow:hidden}
+.ac::before{content:"";position:absolute;top:0;left:0;width:100%;height:100%;background:linear-gradient(135deg,rgba(255,255,255,.3),transparent);opacity:0;transition:opacity .3s}
+.ac:hover::before{opacity:1}
+.ac:hover{transform:translateX(4px);box-shadow:0 6px 20px rgba(120,90,60,.12)}
+.ac:active{transform:scale(.98)}
 .ac:nth-child(1){background:var(--a1)}.ac:nth-child(2){background:var(--a2)}.ac:nth-child(3){background:var(--a3)}
 .ac b{display:block;font-size:1.1rem;font-weight:800}
 .ac .tr{margin-top:2px;font-size:.95rem}
 .ctl{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-top:20px}
-.btn{border:0;border-radius:14px;padding:12px 20px;font:inherit;font-weight:700;cursor:pointer;color:#fff}
+.btn{border:0;border-radius:14px;padding:12px 20px;font:inherit;font-weight:700;cursor:pointer;color:#fff;transition:all .2s;position:relative;overflow:hidden}
+.btn::after{content:"";position:absolute;top:50%;left:50%;width:0;height:0;border-radius:50%;background:rgba(255,255,255,.3);transform:translate(-50%,-50%);transition:width .4s,height .4s}
+.btn:hover::after{width:200px;height:200px}
+.btn:hover{transform:translateY(-2px);box-shadow:0 6px 16px rgba(0,0,0,.15)}
+.btn:active{transform:translateY(0)}
 .b-no{background:var(--no)}.b-ok{background:var(--ok)}
 .b-n{background:var(--card);color:var(--ink);border:1px solid var(--line)}
-.hint{text-align:center;color:var(--mute);font-size:.82rem;margin-top:14px}
-.empty{text-align:center;padding:50px 10px;color:var(--mute)}
+.hint{text-align:center;color:var(--mute);font-size:.82rem;margin-top:14px;animation:pulse 2s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:.7}50%{opacity:1}}
+.empty{text-align:center;padding:50px 10px;color:var(--mute);font-size:1.2rem;animation:fadeIn .5s}
 </style>
 </head>
 <body>
@@ -87,7 +106,27 @@ var P=[
 ["¿Qué hora es?","Который час?",[["Son las tres.","Три часа."],["Son las cinco.","Пять часов."],["Es la una.","Час."]]],
 ["¿Cómo se dice «стол» en español?","Как сказать «стол» по-испански?",[["Se dice «mesa».","Говорят «mesa»."],["Se dice «casa».","Говорят «casa»."],["Se dice «perro».","Говорят «perro»."]]],
 ["¿Puedes repetir, por favor?","Можешь повторить, пожалуйста?",[["Sí, claro.","Да, конечно."],["Sí, otra vez.","Да, ещё раз."],["Perdón, no entiendo.","Извини, я не понимаю."]]],
-["¿Qué significa «mesa»?","Что значит «mesa»?",[["Significa «стол».","Значит «стол»."],["Significa «кот».","Значит «кот»."],["Significa «дом».","Значит «дом»."]]]
+["¿Qué significa «mesa»?","Что значит «mesa»?",[["Significa «стол».","Значит «стол»."],["Significa «кот».","Значит «кот»."],["Significa «дом».","Значит «дом»."]]],
+["¿Qué te gusta hacer?","Что ты любишь делать?",[["Me gusta leer.","Я люблю читать."],["Me gusta bailar.","Я люблю танцевать."],["Me gusta cocinar.","Я люблю готовить."]]],
+["¿Te gusta el café?","Тебе нравится кофе?",[["Sí, me gusta mucho.","Да, мне очень нравится."],["No, no me gusta.","Нет, мне не нравится."],["Me gusta el té.","Мне нравится чай."]]],
+["¿Qué comes?","Что ты ешь?",[["Como pan.","Я ем хлеб."],["Como una ensalada.","Я ем салат."],["Como arroz con pollo.","Я ем рис с курицей."]]],
+["¿Tienes hambre?","Ты голоден?",[["Sí, tengo hambre.","Да, я голоден."],["No, no tengo hambre.","Нет, я не голоден."],["Tengo un poco de hambre.","Я немного голоден."]]],
+["¿Tienes sed?","Ты хочешь пить?",[["Sí, tengo sed.","Да, я хочу пить."],["No, no tengo sed.","Нет, я не хочу пить."],["Un poco.","Немного."]]],
+["¿A dónde vas?","Куда ты идёшь?",[["Voy al trabajo.","Я иду на работу."],["Voy a casa.","Я иду домой."],["Voy al parque.","Я иду в парк."]]],
+["¿Cuándo llegas?","Когда ты приходишь?",[["Llego a las cinco.","Я прихожу в пять."],["Llego mañana.","Я приду завтра."],["Llego esta noche.","Я приду сегодня вечером."]]],
+["¿Qué día es hoy?","Какой сегодня день?",[["Hoy es lunes.","Сегодня понедельник."],["Hoy es viernes.","Сегодня пятница."],["Hoy es domingo.","Сегодня воскресенье."]]],
+["¿Qué tiempo hace?","Какая погода?",[["Hace frío.","Холодно."],["Hace calor.","Жарко."],["Llueve.","Идёт дождь."]]],
+["¿Estudias o trabajas?","Ты учишься или работаешь?",[["Estudio.","Я учусь."],["Trabajo.","Я работаю."],["Estudio y trabajo.","Я учусь и работаю."]]],
+["¿Qué estudias?","Что ты изучаешь?",[["Estudio medicina.","Я изучаю медицину."],["Estudio español.","Я изучаю испанский."],["Estudio matemáticas.","Я изучаю математику."]]],
+["¿Tienes coche?","У тебя есть машина?",[["Sí, tengo un coche.","Да, у меня есть машина."],["No, no tengo coche.","Нет, у меня нет машины."],["No, voy en metro.","Нет, я езжу на метро."]]],
+["¿Qué idiomas hablas?","На каких языках ты говоришь?",[["Hablo ruso y español.","Я говорю на русском и испанском."],["Hablo inglés.","Я говорю на английском."],["Hablo tres idiomas.","Я говорю на трёх языках."]]],
+["¿Dónde está el baño?","Где туалет?",[["Está aquí.","Здесь."],["Está a la derecha.","Справа."],["Está al final del pasillo.","В конце коридора."]]],
+["¿Cuánto cuesta?","Сколько стоит?",[["Cuesta cinco euros.","Стоит пять евро."],["Cuesta veinte rublos.","Стоит двадцать рублей."],["Es gratis.","Это бесплатно."]]],
+["¿Me ayudas?","Ты мне поможешь?",[["Sí, claro.","Да, конечно."],["Sí, con mucho gusto.","Да, с удовольствием."],["Lo siento, no puedo.","Извини, не могу."]]],
+["¿Entiendes?","Ты понимаешь?",[["Sí, entiendo.","Да, понимаю."],["No, no entiendo.","Нет, не понимаю."],["Más o menos.","Более-менее."]]],
+["¿Cómo se llama esto?","Как это называется?",[["Se llama libro.","Это называется книга."],["Se llama teléfono.","Это называется телефон."],["No sé.","Не знаю."]]],
+["¿Tienes tiempo?","У тебя есть время?",[["Sí, tengo tiempo.","Да, у меня есть время."],["No, lo siento.","Нет, извини."],["Tengo un poco de tiempo.","У меня есть немного времени."]]],
+["¿Qué vas a hacer?","Что ты собираешься делать?",[["Voy a estudiar.","Я собираюсь учиться."],["Voy a dormir.","Я собираюсь спать."],["Voy a ver una película.","Я собираюсь посмотреть фильм."]]]
 ];
 var S={},dir=0,only=false,i=0,rev=false,K="tarjetas_a1";
 try{S=JSON.parse(localStorage.getItem(K)||"{}")}catch(e){S={}}
